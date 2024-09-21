@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ticketapp/views/widgets/app_bar.dart';
-import 'views/login_page.dart';
+import 'views/auth/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const Scaffold(
-        appBar: CustomAppBar(),
         body: LoginPage()
       ),
     );

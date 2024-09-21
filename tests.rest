@@ -1,0 +1,45 @@
+@hostname = localhost
+@port = 8000
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+# Login user with valid credentials
+####
+# @prompt username
+# @prompt password
+GET http://{{host}}/get HTTP/1.1
+
+###
+# Register user with valid credentials
+
+###
+# Login user with invalid credentials
+
+###
+# Register user with invalid credentials
+
+###
+# Fetch events
+
+###
+# Fetch event by id
+
+###
+# Fetch event by id with invalid id
+
+###
+# Order ticket
+
+###
+# Order ticket with invalid event id
+
+###
+# Show all my tickets with valid credentials
+
+###
+# Show all my tickets with invalid credentials
+
+###
+# Show a ticket by id with valid credentials
+
+
