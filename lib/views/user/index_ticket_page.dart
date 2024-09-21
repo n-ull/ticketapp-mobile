@@ -10,6 +10,18 @@ class UserIndexTicketPage extends StatefulWidget {
 class UserIndexTicketPageState extends State<UserIndexTicketPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Tickets'),
+        leading: BackButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: const Center(
+        child: Text("You don't own any tickets yet."),
+      ),
+    );
   }
 }
