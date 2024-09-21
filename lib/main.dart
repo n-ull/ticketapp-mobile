@@ -18,9 +18,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark(
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        appBar: CustomAppBar(),
-        body: EventIndexPage()
+      home: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoritos'),
+            BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Agenda'),
+          ],
+        ),
+        appBar: const CustomAppBar(),
+        body: const EventIndexPage()
       ),
     );
   }
