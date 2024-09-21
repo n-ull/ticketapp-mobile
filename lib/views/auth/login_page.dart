@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ticketapp/views/auth/register_page.dart';
 import 'package:ticketapp/views/widgets/input_widget.dart';
 
 class LoginPage extends StatefulWidget {
@@ -42,7 +44,9 @@ class _LoginPageState extends State<LoginPage> {
                 height: 30,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.snackbar('testing', 'snackbar');
+                },
                 style: ButtonStyle(
                     padding: WidgetStateProperty.all(
                   const EdgeInsets.symmetric(horizontal: 50),
@@ -55,7 +59,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterPage()));
+                },
                 child: const Text('Register', style: TextStyle(fontSize: 14)),
               ),
             ],
