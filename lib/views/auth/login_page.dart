@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ticketapp/controllers/authentication.dart';
 import 'package:ticketapp/views/auth/register_page.dart';
 import 'package:ticketapp/views/widgets/input_widget.dart';
 
@@ -12,6 +13,8 @@ class LoginPage extends StatefulWidget {
 
 final TextEditingController _emailController = TextEditingController();
 final TextEditingController _passwordController = TextEditingController();
+final AuthenticationController _authenticationController =
+    Get.put(AuthenticationController());
 
 class _LoginPageState extends State<LoginPage> {
   @override
@@ -43,27 +46,30 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 30,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.snackbar('testing', 'snackbar');
-                },
-                style: ButtonStyle(
-                    padding: WidgetStateProperty.all(
-                  const EdgeInsets.symmetric(horizontal: 50),
-                )),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 16,
+              Obx(() {
+                return _authenticationController.isLoading.value ? const CircularProgressIndicator() :
+                ElevatedButton(
+                  onPressed: () async {
+                    await _authenticationController.login(
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim(),
+                    );
+                  },
+                  style: ButtonStyle(
+                      padding: WidgetStateProperty.all(
+                    const EdgeInsets.symmetric(horizontal: 50),
+                  )),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegisterPage()));
+                  Get.to(() => const RegisterPage());
                 },
                 child: const Text('Register', style: TextStyle(fontSize: 14)),
               ),
