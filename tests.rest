@@ -3,14 +3,25 @@
 @host = {{hostname}}:{{port}}
 @contentType = application/json
 
+# Test API
+###
+GET http://{{host}}/api/test HTTP/1.1
+
 # Login user with valid credentials
 ####
 # @prompt username
 # @prompt password
-GET http://{{host}}/get HTTP/1.1
+GET http://{{host}}/ HTTP/1.1
 
 ###
 # Register user with valid credentials
+POST http://{{host}}/register HTTP/1.1
+{
+    "name": "test",
+    "password": "test",
+    "email": "testemail@gmail.com",
+    "dni": 1231234
+}
 
 ###
 # Login user with invalid credentials
