@@ -12,6 +12,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      flexibleSpace:
+          Container(decoration: const BoxDecoration(color: Colors.black)),
+      elevation: 0,
       title: const Row(
         children: [
           GradientText('moov',
@@ -33,7 +36,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.confirmation_num_rounded),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const UserIndexTicketPage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const UserIndexTicketPage()));
           },
         ),
         IconButton(

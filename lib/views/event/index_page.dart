@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ticketapp/views/event/show_page.dart';
+import 'package:ticketapp/controllers/shows.dart';
+import 'package:ticketapp/views/widgets/pinned_show_card_data.dart';
+import 'package:ticketapp/views/widgets/search_bar.dart';
+import 'package:ticketapp/views/widgets/show_data.dart';
 
 /* I need a custom data for a card about an event */
 class ShowEvent {
@@ -18,154 +21,76 @@ class ShowEvent {
   });
 }
 
-class EventIndexPage extends StatelessWidget {
+class EventIndexPage extends StatefulWidget {
   const EventIndexPage({super.key});
 
-  Widget _testCard() => Container(
-        width: 360, // Puedes ajustar el tamaño según sea necesario
-        height: 280,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15), // Bordes redondeados
-          image: const DecorationImage(
-            image: NetworkImage(
-                'https://placehold.co/360x280/png'), // Tu imagen de fondo
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Stack(
-          children: [
-            // Gradiente encima del fondo
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  gradient: LinearGradient(
-                    colors: [Colors.black.withOpacity(0.6), Colors.transparent],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
-                ),
-              ),
-            ),
-            // Fecha en la esquina superior derecha
-            Positioned(
-              top: 10,
-              right: 10,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Column(
-                  children: [
-                    Text(
-                      "16",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "SEP",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Contenido del evento
-            const Positioned(
-              bottom: 20,
-              left: 15,
-              right: 15,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Nombre del Evento",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    "Lun, 16 Sept",
-                    style: TextStyle(
-                      color: Colors.pinkAccent,
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    "Córdoba, Av. Roque Saenz Peña 993",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Botón de favorito (estrella)
-            Positioned(
-              left: 10,
-              top: 10,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.star_border_rounded,
-                  color: Colors.pinkAccent,
-                  size: 38,
-                ),
-                onPressed: () {
-                  Get.to(() => const EventShowPage());
-                },
-              ),
-            ),
-          ],
-        ),
-      );
+  @override
+  State<EventIndexPage> createState() => _EventIndexPageState();
+}
 
-  Widget _simpleCard() => ListTile(
-        leading: Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            image: const DecorationImage(
-              image: NetworkImage('https://placehold.co/60x60/png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        title: const Text('Evento 1'),
-        subtitle: const Text('Descripción del evento 1'),
-        trailing: const Icon(Icons.arrow_forward_ios),
-      );
+class _EventIndexPageState extends State<EventIndexPage> {
+  final ShowController _showController = Get.put(ShowController());
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Obx(() {
+      return _showController.isLoading.value
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                /* searchbox */
+                const CustomSearchBar(),
+                /* 
+                ElevatedButton(
+                    onPressed: () {
+                      _showController.fetchShows();
+                    },
+                    child: const Text('Fetch Shows')), */
+                const SingleChildScrollView(
+                  padding: EdgeInsets.all(16),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      PinnedShowCard(),
+                      SizedBox(width: 20),
+                      PinnedShowCard(),
+                      SizedBox(width: 20),
+                      PinnedShowCard(),
+                    ],
+                  ),
+                ),
+                Text('EVENTOS DESTACADOS',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: GoogleFonts.rowdies().fontFamily)),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: ListView.builder(
+                      primary: false,
+                      padding: const EdgeInsets.all(16),
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: 8,
+                      itemBuilder: (context, index) {
+                        return ShowData(
+                            show: _showController.shows.value[index]);
+                      }),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            );
+    });
+  }
+}
+
+
+
+
+/* 
+Column(
       children: [
         /* searchbox */
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Buscar eventos',
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-          ),
-        ),
         Text('EVENTOS DESTACADOS',
             style: TextStyle(
                 fontSize: 16, fontFamily: GoogleFonts.anta().fontFamily)),
@@ -186,9 +111,6 @@ class EventIndexPage extends StatelessWidget {
             style: TextStyle(
                 fontSize: 16, fontFamily: GoogleFonts.anta().fontFamily)),
         /* 60x60 show event card */
-        _simpleCard(),
-        _simpleCard(),
-        _simpleCard(),
         const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -214,6 +136,4 @@ class EventIndexPage extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-}
+    ); */

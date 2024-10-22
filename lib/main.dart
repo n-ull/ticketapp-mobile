@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ticketapp/views/event/index_page.dart';
-import 'package:ticketapp/views/widgets/app_bar.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:ticketapp/views/auth/login_page.dart';
+import 'package:ticketapp/views/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,23 +13,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
+    final token = box.read('token');
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Moovin',
       theme: ThemeData.dark(
         useMaterial3: true,
       ),
-      home: Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoritos'),
-            BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Agenda'),
-          ],
-        ),
-        appBar: const CustomAppBar(),
-        body: const EventIndexPage()
-      ),
+      home: token == null ? const LoginPage() : const Home(),
     );
   }
 }

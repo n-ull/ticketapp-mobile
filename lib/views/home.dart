@@ -15,20 +15,11 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: const CustomAppBar(),
+      backgroundColor: Colors.black,
       bottomNavigationBar: Stack(
         children: [
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.black38, Colors.transparent],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                ),
-              ),
-            ),
-          ),
           BottomNavigationBar(
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.white30,

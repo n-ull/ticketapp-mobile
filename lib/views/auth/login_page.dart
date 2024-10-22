@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ticketapp/controllers/authentication.dart';
 import 'package:ticketapp/views/auth/register_page.dart';
 import 'package:ticketapp/views/widgets/input_widget.dart';
+import 'package:ticketapp/views/widgets/logotype.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,13 +21,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Login Page', style: TextStyle(fontSize: 30)),
+              const Logotype(size: 48),
               const SizedBox(
                 height: 30,
               ),
@@ -39,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 20,
               ),
               InputWidget(
-                hintText: 'Password',
+                hintText: 'Contraseña',
                 controller: _passwordController,
                 obscureText: true,
               ),
@@ -47,25 +49,26 @@ class _LoginPageState extends State<LoginPage> {
                 height: 30,
               ),
               Obx(() {
-                return _authenticationController.isLoading.value ? const CircularProgressIndicator() :
-                ElevatedButton(
-                  onPressed: () async {
-                    await _authenticationController.login(
-                      email: _emailController.text.trim(),
-                      password: _passwordController.text.trim(),
-                    );
-                  },
-                  style: ButtonStyle(
-                      padding: WidgetStateProperty.all(
-                    const EdgeInsets.symmetric(horizontal: 50),
-                  )),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                );
+                return _authenticationController.isLoading.value
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: () async {
+                          await _authenticationController.login(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim(),
+                          );
+                        },
+                        style: ButtonStyle(
+                            padding: WidgetStateProperty.all(
+                          const EdgeInsets.symmetric(horizontal: 50),
+                        )),
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      );
               }),
               TextButton(
                 onPressed: () {

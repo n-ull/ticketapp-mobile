@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 class InputWidget extends StatelessWidget {
   const InputWidget({
-    super.key, required this.hintText, required this.controller, required this.obscureText,
+    super.key,
+    required this.hintText,
+    required this.controller,
+    required this.obscureText,
   });
 
   final String hintText;
@@ -21,7 +24,9 @@ class InputWidget extends StatelessWidget {
         obscureText: obscureText,
         controller: controller,
         decoration: InputDecoration(
-            border: InputBorder.none,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             hintText: hintText,
             contentPadding: const EdgeInsets.symmetric(horizontal: 20)),
       ),
