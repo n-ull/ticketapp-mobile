@@ -7,7 +7,9 @@ import 'package:ticketapp/constants/constants.dart';
 import 'package:ticketapp/models/show_model.dart';
 
 class ShowController extends GetxController {
-  final isLoading = false.obs;
+  final isLoadingAllShows = false.obs;
+  final isLoadingShow = false.obs;
+  var showDetail = Rxn<ShowModel>();
   Rx<List<ShowModel>> shows = Rx<List<ShowModel>>([]);
 
   final box = GetStorage();
@@ -20,7 +22,7 @@ class ShowController extends GetxController {
 
   Future fetchShows() async {
     try {
-      isLoading.value = true;
+      isLoadingAllShows.value = true;
 
       final token = box.read('token');
 
@@ -37,9 +39,9 @@ class ShowController extends GetxController {
           shows.value.add(ShowModel.fromJson(item));
         }
 
-        isLoading.value = false;
+        isLoadingAllShows.value = false;
       } else {
-        isLoading.value = false;
+        isLoadingAllShows.value = false;
         Get.snackbar(
           'Error',
           json.decode(response.body)['message'],
@@ -50,14 +52,14 @@ class ShowController extends GetxController {
         debugPrint(jsonDecode(response.body)['message']);
       }
     } catch (e) {
-      isLoading.value = false;
+      isLoadingAllShows.value = false;
       debugPrint(e.toString());
     }
   }
 
-  Future fetchShow(int id) async {
+  Future fetchShow(int showId) async {
     try {
-      isLoading.value = true;
+      isLoadingAllShows.value = true;
 
       final token = box.read('token');
 
@@ -68,13 +70,14 @@ class ShowController extends GetxController {
       };
 
       var response =
-          await http.get(Uri.parse('${url}shows/$id'), headers: headers);
+          await http.get(Uri.parse('${url}shows/$showId'), headers: headers);
 
       if (response.statusCode == 200) {
-        isLoading.value = false;
-        return ShowModel.fromJson(json.decode(response.body)['data']);
+        isLoadingShow.value = false;
+        showDetail.value =
+            ShowModel.fromJson(json.decode(response.body)['data']);
       } else {
-        isLoading.value = false;
+        isLoadingShow.value = false;
         Get.snackbar(
           'Error',
           json.decode(response.body)['message'],
@@ -85,14 +88,14 @@ class ShowController extends GetxController {
         debugPrint(jsonDecode(response.body)['message']);
       }
     } catch (e) {
-      isLoading.value = false;
+      isLoadingShow.value = false;
       debugPrint(e.toString());
     }
   }
 
   Future fetchShowByTitle(String title) async {
     try {
-      isLoading.value = true;
+      isLoadingAllShows.value = true;
 
       final token = box.read('token');
 
@@ -106,10 +109,10 @@ class ShowController extends GetxController {
           headers: headers);
 
       if (response.statusCode == 200) {
-        isLoading.value = false;
+        isLoadingAllShows.value = false;
         return ShowModel.fromJson(json.decode(response.body)['data'][0]);
       } else {
-        isLoading.value = false;
+        isLoadingAllShows.value = false;
         Get.snackbar(
           'Error',
           json.decode(response.body)['message'],
@@ -120,7 +123,7 @@ class ShowController extends GetxController {
         debugPrint(jsonDecode(response.body)['message']);
       }
     } catch (e) {
-      isLoading.value = false;
+      isLoadingAllShows.value = false;
       debugPrint(e.toString());
     }
   }

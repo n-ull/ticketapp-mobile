@@ -34,40 +34,41 @@ class _EventIndexPageState extends State<EventIndexPage> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return _showController.isLoading.value
+      return _showController.isLoadingAllShows.value
           ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
-                /* searchbox */
-                const CustomSearchBar(),
-                /* 
-                ElevatedButton(
+                /* ElevatedButton(
                     onPressed: () {
                       _showController.fetchShows();
                     },
                     child: const Text('Fetch Shows')), */
-                const SingleChildScrollView(
-                  padding: EdgeInsets.all(16),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      PinnedShowCard(),
-                      SizedBox(width: 20),
-                      PinnedShowCard(),
-                      SizedBox(width: 20),
-                      PinnedShowCard(),
-                    ],
+                /* searchbox */
+                const CustomSearchBar(),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: PinnedShowCard(
+                            show: _showController.shows.value[index]),
+                      );
+                    },
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    scrollDirection: Axis.horizontal,
                   ),
                 ),
-                Text('EVENTOS DESTACADOS',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: GoogleFonts.rowdies().fontFamily)),
-                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('EVENTOS DESTACADOS',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: GoogleFonts.rowdies().fontFamily)),
+                ),
                 Expanded(
                   child: ListView.builder(
                       primary: false,
-                      padding: const EdgeInsets.all(16),
                       physics: const BouncingScrollPhysics(),
                       itemCount: 8,
                       itemBuilder: (context, index) {

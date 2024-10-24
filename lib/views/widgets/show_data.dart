@@ -12,15 +12,15 @@ class ShowData extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        Get.to(() => EventShowPage(show: show));
+        Get.to(() => const EventShowPage(), arguments: show.id);
       },
       leading: Container(
         width: 64,
         height: 64,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          image: const DecorationImage(
-            image: NetworkImage('https://placehold.co/64x64/png'),
+          image: DecorationImage(
+            image: NetworkImage(show.thumbnail),
             fit: BoxFit.cover,
           ),
         ),
